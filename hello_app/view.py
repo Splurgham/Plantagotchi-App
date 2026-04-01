@@ -1,7 +1,15 @@
 from flask import Flask
 from flask import render_template
+from flask import jsonify
 from datetime import datetime
 from . import app
+
+@app.route('/chart/')
+def chart():
+    labels = ['January', 'February', 'March', 'April', 'May', 'June']
+    data = [0, 10, 15, 8, 22, 18, 25]
+    
+    return render_template('chart.html', labels=labels, data=data)
 
 @app.route("/")
 def home():

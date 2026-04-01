@@ -3,6 +3,7 @@ from datetime import datetime
 from flask import Flask
 app = Flask(__name__)
 from flask import render_template
+from flask import jsonify
 
 #@app.route("/")
 #def home():
@@ -51,3 +52,7 @@ def about():
 @app.route("/contact/")
 def contact():
     return render_template("contact.html")
+
+@app.route('/api/data')
+def data():
+    return jsonify(labels=["Jan","Feb"], values=[10,20])
