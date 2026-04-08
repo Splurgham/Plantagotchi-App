@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+{% block title %}
+Plant Selection
+{% endblock %}
+{% block content %}
+<p>Select your Plant!</p>
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- <title>dropdown</title> -->
+</head>
+<body>
+<select name= plants method="GET" action="/">
+    {% for plants in plants %}
+    <option value= "{{plants}}" SELECTED>{{plants}}</option>"
+    {% endfor %}
+</select>
+
+</body>
+</html>
+{% endblock %}
