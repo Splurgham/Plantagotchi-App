@@ -1,15 +1,32 @@
-from flask import Flask
-from flask import render_template, request
-from flask import jsonify
-from asyncua import Client
+from flask import Flask, jsonify, render_template, request
+from asyncua import Client, ua
 from datetime import datetime
+import asyncio
 from . import app
 
-@app.route("/read")
-# async def read_node():
-#     async with Client(url="opc.tcp://100.90.187.71:4840/myopcua/server") as client:
+# OPC_SERVER_URL = "opc.tcp://"
+
+# async def get_opc_data():
+#     # Connect to the OPC UA Server
+#     client = Client(url=OPC_SERVER_URL)
+#     async with client:
+#         # Example node ID to read
 #         node = client.get_node("ns=2;s='Water'")
 #         value = await node.read_value()
+#         return value
+
+
+# @app.route('/api/opc-data')
+# def get_opcdata():
+#     # Run async function in synchronous Flask route
+#     try:
+#         data = asyncio.run(get_opc_data())
+#         return jsonify({"node_value": data})
+#     except Exception as e:
+#         return jsonify({"error": str(e)})
+
+
+@app.route("/read")
 def read():
     var = 5
     return render_template('read.html', var=var)
