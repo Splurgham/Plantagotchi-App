@@ -14,36 +14,84 @@ Chart
 </head>
 <body>
     <div style="height: 50vh; width: 50%;">
-        <canvas id="myChart"></canvas>
+        <canvas id="myChart1"></canvas>
+        <canvas id="myChart2"></canvas>
+        <canvas id="myChart3"></canvas>
     </div>
 
     <!-- Store Flask data as a JavaScript variable -->
     <script>
-        const labels = JSON.parse('{{ labels | tojson | safe }}');
-        const chartData = JSON.parse('{{ data | tojson | safe }}');
+        const labels1 = JSON.parse('{{ labels | tojson | safe }}');
+        const chartData1 = JSON.parse('{{ data | tojson | safe }}');
 
-        const data = {
-            labels: labels,
-            datasets: [{
-                label: 'Sales',
-                backgroundColor: 'rgb(255, 99, 132)',
-                borderColor: 'rgb(255, 99, 132)',
-                data: chartData,
-            }]
-        };
+        const labels2 = JSON.parse('{{ labels2 | tojson | safe }}');
+        const chartData2 = JSON.parse('{{ data2 | tojson | safe }}');
 
-        const config = {
+        const labels3 = JSON.parse('{{ labels3 | tojson | safe }}');
+        const chartData3 = JSON.parse('{{ data3 | tojson | safe }}');
+
+        const config1 = {
             type: 'line',
-            data: data,
-            options: { maintainAspectRatio: false }
+            data: {
+            labels: labels1,
+            datasets: [{
+                label: 'Light Level',
+                backgroundColor: 'rgba(255, 255, 66, 0.2)',
+                borderColor: 'rgb(255, 255, 66)',
+                data: chartData1,
+                fill: true
+            }]
+            },
+            options: {
+            maintainAspectRatio: false,
+            responsive: true
+            }
         };
+        const config2 = {
+            type: 'line',
+            data: {
+            labels: labels2,
+            datasets: [{
+                label: 'Water Level',
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgb(54, 162, 235)',
+                data: chartData2,
+                fill:true
+            }]
+            },
+            options: {
+            maintainAspectRatio: false,
+            responsive: true
+            }
+        };
+        const config3 = {
+            type: 'line',
+            data: {
+            labels: labels3,
+            datasets: [{
+                label: 'Nutrient Levels',
+                backgroundColor: 'rgba(50, 230, 100, 0.2)',
+                borderColor: 'rgb(50, 230, 100)',
+                data: chartData3,
+                fill: true
+            }]
+            },
+            options: {
+            maintainAspectRatio: false,
+            responsive: true
+            }
+        };
+        // Create chart instances
+        const ctx1 = document.getElementById('myChart1').getContext('2d');
+        const myChart1 = new Chart(ctx1, config1);
+        
+        const ctx2 = document.getElementById('myChart2').getContext('2d');
+        const myChart2 = new Chart(ctx2, config2);
 
-        const myChart = new Chart(
-            document.getElementById('myChart'),
-            config
-        );
+        const ctx3 = document.getElementById('myChart3').getContext('2d');
+        const myChart3 = new Chart(ctx3, config3);
     </script>
 </body>
 </html>
-
+<hr/>
 {% endblock %}
