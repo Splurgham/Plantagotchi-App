@@ -8,7 +8,9 @@ from . import app
 
 light_data = []
 moisture_data = []
-nutrient_data = []
+nitrogen_data = []
+phosphorus_data = []
+potassium_data = []
 
 OPC_SERVER_URL = "opc.tcp://100.90.187.71:4840/myopcua/server"
 
@@ -30,7 +32,9 @@ async def get_opc_data(node):
         # Example node ID to read
         node = client.get_node(f"ns=2;s={node}")
         value = await node.read_value()
+        # await node.write_value(ua.Variant(val_to_write, ua.VariantType.Boolean))
         return value
+
 
 
 # @app.route('/api/opc-data')
