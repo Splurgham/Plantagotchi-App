@@ -1,12 +1,25 @@
 from flask import Flask, jsonify, render_template, request
 from asyncua import Client, ua
 from datetime import datetime
+import time
 import asyncio
+import threading
 from . import app
 
 light_data = []
 
 OPC_SERVER_URL = "opc.tcp://100.90.187.71:4840/myopcua/server"
+
+# def poll_server():
+#     while True:
+#         try:
+#             new_val = float(asyncio.run(get_opc_data("Moisture")))
+#             if len(light_data) > 4:
+#                 light_data = light_data[1:]
+#             light_data += [new_val]
+#         except:
+#             pass
+#         time.sleep(1)
 
 async def get_opc_data(node):
     # Connect to the OPC UA Server
@@ -81,4 +94,6 @@ def dropdown():
 def get_data():
     return app.send_static_file("data.json")
 
-# app.run(debug=True, use_reloader=False)
+
+# poop = threading.Thread(target = poll_server, daemon=True)
+# poop.start()
