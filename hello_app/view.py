@@ -4,7 +4,7 @@ from datetime import datetime
 import asyncio
 from . import app
 
-moisture_data = []
+light_data = []
 
 OPC_SERVER_URL = "opc.tcp://100.90.187.71:4840/myopcua/server"
 
@@ -37,18 +37,18 @@ def read():
 @app.route('/chart/')
 def chart():
     labels = ['t1','t2','t3','t4','t5']
-    global moisture_data
+    global light_data
     new_val = float(asyncio.run(get_opc_data("Moisture")))
-    if len(moisture_data) > 4:
-        moisture_data = moisture_data[1:]
-    moisture_data += [new_val]
+    if len(light_data) > 4:
+        light_data = light_data[1:]
+    light_data += [new_val]
     
 
     labels2 = ['Fern', 'bush', 'herb', 'grass', 'flower', 'shrub']
     data2 = [0, 10, 15, 20, 20, 20]
     labels3 = ['Fern', 'bush', 'herb', 'grass', 'flower', 'shrub']
     data3 = [0, 5, 5, 20, 15, 10]
-    return render_template('chart.html', labels=labels, data=moisture_data, labels2=labels2, data2=data2, labels3=labels3, data3=data3)
+    return render_template('chart.html', labels=labels, data=light_data, labels2=labels2, data2=data2, labels3=labels3, data3=data3)
 
 
 @app.route("/")
