@@ -37,7 +37,11 @@ def read():
 def chart():
     labels = ['January', 'February', 'March', 'April', 'May', 'June']
     data = [0, 10, 15, 8, 22, 5]
-    return render_template('chart.html', labels=labels, data=data)
+    labels2 = ['Fern', 'bush', 'herb', 'grass', 'flower', 'shrub']
+    data2 = [0, 10, 15, 20, 20, 20]
+    labels3 = ['Fern', 'bush', 'herb', 'grass', 'flower', 'shrub']
+    data3 = [0, 5, 5, 20, 15, 10]
+    return render_template('chart.html', labels=labels, data=data, labels2=labels2, data2=data2, labels3=labels3, data3=data3)
 
 
 @app.route("/")
