@@ -3,14 +3,13 @@
 Plant Selection
 {% endblock %}
 {% block content %}
-<p>Select your Plant!</p>
 
 
-<!DOCTYPE html>
+
+<!--<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <!-- <title>dropdown</title> -->
 </head>
 <body>
 <select name= plants method="GET" action="/">
@@ -21,5 +20,24 @@ Plant Selection
 
 </body>
 </html>
+-->
+<form method="GET" action="/dropdown/">
+  <label for="plant">Select your Plant</label>
+  <select id="plant" name="plant" onchange="this.form.submit()">
+    <option value="">Choose…</option>
+    {% for plant in plants %}
+      <option value="{{ plant }}" {% if plant == selected_plant %}selected{% endif %}>{{ plant }}</option>
+    {% endfor %}
+  </select>
+</form>
+
+<div id="plant-info">
+  {% if selected_plant %}
+    <h2>{{ selected_plant }}</h2>
+    <p>{{ plant_info[selected_plant] }}</p>
+  {% endif %}
+</div>
+
+
 <hr/>
 {% endblock %}

@@ -52,10 +52,12 @@ def home():
 def about():
     return render_template("about.html")
 
-@app.route("/dropdown/", methods = ['GET'])
+@app.route("/dropdown/")
 def dropdown():
     plants = ['Fern', 'Succulent', 'Flower', 'Shrub']
-    return render_template('dropdown.html', plants=plants)
+    selected = request.args.get('plant')
+    plant_info = {'Flower':'Needs bright light', 'Fern':'Keep moist', 'Succulent':'Low water', 'Shrub':'doesnt need much'}
+    return render_template('dropdown.html', plants=plants, selected_plant=selected, plant_info=plant_info)
 
 
 
