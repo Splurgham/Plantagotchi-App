@@ -7,6 +7,8 @@ import threading
 from . import app
 
 light_data = []
+moisture_data = []
+nutrient_data = []
 
 OPC_SERVER_URL = "opc.tcp://100.90.187.71:4840/myopcua/server"
 
@@ -51,17 +53,22 @@ def read():
 def chart():
     labels = ['t1','t2','t3','t4','t5']
     global light_data
-    new_val = float(asyncio.run(get_opc_data("Moisture")))
+    new_val1 = float(asyncio.run(get_opc_data("LightIntensity")))
     if len(light_data) > 4:
         light_data = light_data[1:]
-    light_data += [new_val]
+    light_data += [new_val1]
     
 
-    labels2 = ['Fern', 'bush', 'herb', 'grass', 'flower', 'shrub']
-    data2 = [0, 10, 15, 20, 20, 20]
+    labels2 = ['t1','t2','t3','t4','t5']
+    global moisture_data
+    new_val2 = float(asyncio.run(get_opc_data("Moisture")))
+    if len(moisture_data) > 4:
+        moisture_data = moisture_data[1:]
+    moisture_data += [new_val2]
+    
     labels3 = ['Fern', 'bush', 'herb', 'grass', 'flower', 'shrub']
     data3 = [0, 5, 5, 20, 15, 10]
-    return render_template('chart.html', labels=labels, data=light_data, labels2=labels2, data2=data2, labels3=labels3, data3=data3)
+    return render_template('chart.html', labels=labels, data=light_data, labels2=labels2, data2=moisture_data, labels3=labels3, data3=data3)
 
 
 @app.route("/")
