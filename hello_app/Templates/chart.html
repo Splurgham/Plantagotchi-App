@@ -30,6 +30,8 @@ Chart
 
         const labels3 = JSON.parse('{{ labels3 | tojson | safe }}');
         const chartData3 = JSON.parse('{{ data3 | tojson | safe }}');
+        const chartData4 = JSON.parse('{{ data4 | tojson | safe }}');
+        const chartData5 = JSON.parse('{{ data5 | tojson | safe }}');
 
         const config1 = {
             type: 'line',
@@ -45,7 +47,12 @@ Chart
             },
             options: {
             maintainAspectRatio: false,
-            responsive: true
+            responsive: true,
+            scales: {
+                    y: {
+                    beginAtZero: true,   
+                    } 
+            }
             }
         };
         const config2 = {
@@ -62,7 +69,12 @@ Chart
             },
             options: {
             maintainAspectRatio: false,
-            responsive: true
+            responsive: true,
+            scales: {
+                    y: {
+                    beginAtZero: true,   
+                    } 
+            }
             }
         };
         const config3 = {
@@ -70,20 +82,35 @@ Chart
             data: {
             labels: labels3,
             datasets: [{
-                label: 'Nutrient Levels',
+                label: 'Nitrogen',
                 backgroundColor: 'rgba(50, 230, 100, 0.2)',
                 borderColor: 'rgb(50, 230, 100)',
                 data: chartData3,
                 fill: true
+            },{
+                label: 'Phosphorus',
+                backgroundColor: 'rgba(50, 230, 100, 0.2)',
+                borderColor: 'rgb(50, 230, 100)',
+                data: chartData4,
+                fill: true
+            },{
+                label: 'Potassium',
+                backgroundColor: 'rgba(50, 230, 100, 0.2)',
+                borderColor: 'rgb(50, 230, 100)',
+                data: chartData5,
+                fill: true
             }
-            
             ]
             },
             options: {
             maintainAspectRatio: false,
-            responsive: true
+            responsive: true,
+            scales: {
+                    y: {
+                    beginAtZero: true,   
+                    } 
             }
-        };
+        }};
         // Create chart instances
         const ctx1 = document.getElementById('myChart1').getContext('2d');
         const myChart1 = new Chart(ctx1, config1);

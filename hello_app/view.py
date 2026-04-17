@@ -67,9 +67,26 @@ def chart():
     moisture_data += [new_val2]
     
 
-    labels3 = ['Fern', 'bush', 'herb', 'grass', 'flower', 'shrub']
-    data3 = [0, 5, 5, 20, 15, 10]
-    return render_template('chart.html', labels=labels, data=light_data, labels2=labels2, data2=moisture_data, labels3=labels3, data3=data3)
+    labels3 = ['t1', 't2', 't3', 't4', 't5']
+    global nitrogen_data
+    new_val3 = float(asyncio.run(get_opc_data("Nitrogen")))
+    if len(nitrogen_data) > 4:
+        nitrogen_data = nitrogen_data[1:]
+    nitrogen_data += [new_val3]
+
+    global phosphorus_data
+    new_val4 = float(asyncio.run(get_opc_data("Phosphorus")))
+    if len(phosphorus_data) > 4:
+        phosphorus_data = phosphorus_data[1:]
+    phosphorus_data += [new_val4]
+
+    global potassium_data
+    new_val5 = float(asyncio.run(get_opc_data("Potassium")))
+    if len(potassium_data) > 4:
+        potassium_data = potassium_data[1:]
+    potassium_data += [new_val5]
+
+    return render_template('chart.html', labels=labels, data=light_data, labels2=labels2, data2=moisture_data, labels3=labels3, data3=nitrogen_data, data4=phosphorus_data, data5=potassium_data)
 
 
 @app.route("/")
