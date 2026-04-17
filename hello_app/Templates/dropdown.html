@@ -21,14 +21,14 @@ Plant Selection
 </body>
 </html>
 -->
-<form method="GET" action="/dropdown/">
-  <label for="plant">Select your Plant</label>
-  <select id="plant" name="plant" onchange="this.form.submit()">
-    <option value="">Choose…</option>
+<form action="/dropdown/" method="POST" method="GET">
+  <label for="plant">Choose your Plant Model.</label>
+  <select id="plant" name="plant">
     {% for plant in plants %}
       <option value="{{ plant }}" {% if plant == selected_plant %}selected{% endif %}>{{ plant }}</option>
     {% endfor %}
   </select>
+  <button type="submit">Submit your Plant Model.</button>
 </form>
 
 <div id="plant-info">

@@ -1,9 +1,8 @@
-from flask import Flask, jsonify, render_template, request
+from flask import Flask, jsonify, render_template, request, session
 from asyncua import Client, ua
 from datetime import datetime
 import time
 import asyncio
-import threading
 from . import app
 
 light_data = []
@@ -14,16 +13,6 @@ potassium_data = []
 
 OPC_SERVER_URL = "opc.tcp://100.90.187.71:4840/myopcua/server"
 
-# def poll_server():
-#     while True:
-#         try:
-#             new_val = float(asyncio.run(get_opc_data("Moisture")))
-#             if len(light_data) > 4:
-#                 light_data = light_data[1:]
-#             light_data += [new_val]
-#         except:
-#             pass
-#         time.sleep(1)
 
 async def get_opc_data(node):
     # Connect to the OPC UA Server
@@ -32,29 +21,36 @@ async def get_opc_data(node):
         # Example node ID to read
         node = client.get_node(f"ns=2;s={node}")
         value = await node.read_value()
-        # await node.write_value(ua.Variant(val_to_write, ua.VariantType.Boolean))
         return value
 
+# async def write_opc_data(data):
+#     client = Client(url=OPC_SERVER_URL)
+#     async with client:
+#         # Example node ID to read
+#         node = ("ns=2;s="")
+#         await node.write_value(ua.Variant(data, ua.VariantType.Boolean))
 
-
-# @app.route('/api/opc-data')
-# def get_opcdata():
-#     # Run async function in synchronous Flask route
-#     try:
-#         data = asyncio.run(get_opc_data())
-#         return jsonify({"node_value": data})
-#     except Exception as e:
-#         return jsonify({"error": str(e)})
-
+def PlantModelHelper(Plant):
+    if Plant != None:
+        PlantModel(Plant)
+        return "Plant model chosen."
+    else: 
+        return "Please select a plant model."
+    
+def PlantModel(Plant):
+    # Here is where all of the plant model data will be created for each plant type.
+    # Then, it will be shipped off to the write_opc_data function, which should parse it
+    # and send the model data to the correct nodes on the server.
+    return
 
 @app.route("/read")
 def read():
     var = asyncio.run(get_opc_data("Moisture"))
     return render_template('read.html', var=var)
 
-
 @app.route('/chart/')
 def chart():
+
     labels = ['t1','t2','t3','t4','t5']
     global light_data
     new_val1 = float(asyncio.run(get_opc_data("LightIntensity")))
@@ -70,6 +66,7 @@ def chart():
         moisture_data = moisture_data[1:]
     moisture_data += [new_val2]
     
+
     labels3 = ['Fern', 'bush', 'herb', 'grass', 'flower', 'shrub']
     data3 = [0, 5, 5, 20, 15, 10]
     return render_template('chart.html', labels=labels, data=light_data, labels2=labels2, data2=moisture_data, labels3=labels3, data3=data3)
@@ -83,28 +80,15 @@ def home():
 def about():
     return render_template("about.html")
 
-@app.route("/dropdown/")
+@app.route("/dropdown/", methods = ['GET', 'POST'])
 def dropdown():
     plants = ['Fern', 'Succulent', 'Flower', 'Shrub']
-    selected = request.args.get('plant')
-    plant_info = {'Flower':'Needs bright light', 'Fern':'Keep moist', 'Succulent':'Low water', 'Shrub':'doesnt need much'}
+    selected = request.form.get('plant')
+    print(PlantModelHelper(selected))
+    plant_info = {'Flower':'Needs bright light.', 'Fern':'Keep moist.', 'Succulent':'Low water.', 'Shrub':"Doesn't need much!"}
     return render_template('dropdown.html', plants=plants, selected_plant=selected, plant_info=plant_info)
 
-
-
-# @app.route("/hello/")
-# @app.route("/hello/<name>")
-# def hello_there(name = None):
-#     return render_template(
-#         "hello_there.html",
-#         name=name,
-#         date=datetime.now()
-#     )
 
 @app.route("/api/data")
 def get_data():
     return app.send_static_file("data.json")
-
-
-# poop = threading.Thread(target = poll_server, daemon=True)
-# poop.start()
