@@ -23,25 +23,26 @@ async def get_opc_data(node):
         value = await node.read_value()
         return value
 
-# async def write_opc_data(data):
-#     client = Client(url=OPC_SERVER_URL)
-#     async with client:
-#         # Example node ID to read
-#         node = ("ns=2;s="")
-#         await node.write_value(ua.Variant(data, ua.VariantType.Boolean))
+async def write_opc_data(data, node):
+    client = Client(url=OPC_SERVER_URL)
+    async with client:
+        # Example node ID to read
+        node = client.get_node(f"ns=2;s={node}")
+        await node.write_value(ua.Variant(data, ua.VariantType.Boolean))
+        return True
 
 def PlantModelHelper(Plant):
     if Plant != None:
-        PlantModel(Plant)
-        return "Plant model chosen."
+        # PlantModel(Plant)
+        return "Plant model chosen"
     else: 
         return "Please select a plant model."
     
-def PlantModel(Plant):
-    # Here is where all of the plant model data will be created for each plant type.
-    # Then, it will be shipped off to the write_opc_data function, which should parse it
-    # and send the model data to the correct nodes on the server.
-    return
+# def PlantModel(Plant):
+#     asyncio.run(write_opc_data(False, "Water"))
+#     asyncio.run(write_opc_data(False, "Light"))
+#     asyncio.run(write_opc_data(False, "Food"))
+#     return
 
 @app.route("/read")
 def read():
