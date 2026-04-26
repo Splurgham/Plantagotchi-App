@@ -3,6 +3,9 @@
 Home
 {% endblock %}
 {% block content %}
+<meta name="viewport" content="width=device-wdith, inital-scale=0.25">
 <p>Home page for the Plantagotchi!!! Short description here...</p>
+<img src="{{ url_for('static', filename='/Plantagotchi.png') }}"
+style="width:300px; height:auto;">
 <hr/>
 {% endblock %}
