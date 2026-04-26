@@ -30,19 +30,31 @@ async def write_opc_data(data, node):
         node = client.get_node(f"ns=2;s={node}")
         await node.write_value(ua.Variant(data, ua.VariantType.Boolean))
         return True
+    
+async def write_opc_string(data, node):
+    client = Client(url=OPC_SERVER_URL)
+    async with client:
+        # Example node ID to read
+        node = client.get_node(f"ns=2;s={node}")
+        await node.write_value(ua.Variant(data, ua.VariantType.String))
+        return True
 
 def PlantModelHelper(Plant):
     if Plant != None:
-        # PlantModel(Plant)
+        PlantModel(Plant)
         return "Plant model chosen"
     else: 
         return "Please select a plant model."
     
-# def PlantModel(Plant):
-#     asyncio.run(write_opc_data(False, "Water"))
-#     asyncio.run(write_opc_data(False, "Light"))
-#     asyncio.run(write_opc_data(False, "Food"))
-#     return
+def PlantModel(Plant):
+    asyncio.run(write_opc_string(f"{Plant}", "Plant_Name"))
+    asyncio.run(write_opc_data(True, "New_Plant"))
+    asyncio.run(write_opc_data(False, "Light"))
+    # asyncio.run(write_opc_data(True, "Food"))
+    # time.sleep(2)
+    # asyncio.run(write_opc_data(False, "Food"))
+    #asyncio.run(write_opc_data(False, "Water"))
+    return
 
 @app.route("/read")
 def read():
@@ -52,38 +64,38 @@ def read():
 @app.route('/chart/')
 def chart():
 
-    labels = ['t1','t2','t3','t4','t5']
+    labels = [f't{i+1}' for i in range(60)]
     global light_data
     new_val1 = float(asyncio.run(get_opc_data("LightIntensity")))
-    if len(light_data) > 4:
+    if len(light_data) > 60:
         light_data = light_data[1:]
     light_data += [new_val1]
     
 
-    labels2 = ['t1','t2','t3','t4','t5']
+    labels2 = [f't{i+1}' for i in range(60)]
     global moisture_data
     new_val2 = float(asyncio.run(get_opc_data("Moisture")))
-    if len(moisture_data) > 4:
+    if len(moisture_data) > 60:
         moisture_data = moisture_data[1:]
     moisture_data += [new_val2]
     
 
-    labels3 = ['t1', 't2', 't3', 't4', 't5']
+    labels3 = [f't{i+1}' for i in range(60)]
     global nitrogen_data
     new_val3 = float(asyncio.run(get_opc_data("Nitrogen")))
-    if len(nitrogen_data) > 4:
+    if len(nitrogen_data) > 60:
         nitrogen_data = nitrogen_data[1:]
     nitrogen_data += [new_val3]
 
     global phosphorus_data
     new_val4 = float(asyncio.run(get_opc_data("Phosphorus")))
-    if len(phosphorus_data) > 4:
+    if len(phosphorus_data) > 60:
         phosphorus_data = phosphorus_data[1:]
     phosphorus_data += [new_val4]
 
     global potassium_data
     new_val5 = float(asyncio.run(get_opc_data("Potassium")))
-    if len(potassium_data) > 4:
+    if len(potassium_data) > 60:
         potassium_data = potassium_data[1:]
     potassium_data += [new_val5]
 
